@@ -1,0 +1,177 @@
+
+from pygame import * 
+from random import *
+
+score = 0
+missing = 0
+
+
+
+
+
+clock = time.Clock()
+class GameSprite(sprite.Sprite):
+     def __init__(self, player_image, player_w, player_h, player_x, player_y, player_speed):
+         super().__init__()
+         self.image = transform.scale(image.load(player_image), (player_w, player_h))
+         self.speed = player_speed
+         self.rect = self.image.get_rect()
+         self.rect.x = player_x
+         self.rect.y = player_y
+     def reset(self):
+         window.blit(self.image, (self.rect.x, self.rect.y))
+
+class Enenemy(GameSprite):
+   direction = 'left'
+   def update(self):
+        global missing
+        self.rect.y += self.speed
+        if self.rect.y >= 500:
+            missing += 1
+            self.rect.y = randint(-200, -65)
+            self.rect.x = randint(50, 450)
+            self.speed = randint(1, 5)
+
+
+class Bullet(GameSprite):
+    def update(self):
+        self.rect.y -= self.speed
+        if self.rect.y <= 0:
+            self.kill()
+            
+
+
+
+
+
+
+
+class player(GameSprite):
+    def update(self):
+        keypressed = key.get_pressed()
+        if keypressed[K_w]:
+            self.rect.y -= self.speed
+        if keypressed[K_d]:
+            self.rect.x += self.speed
+        if keypressed[K_a]:
+            self.rect.x -= self.speed
+        if keypressed[K_s]:
+            self.rect.y += self.speed
+        if keypressed[K_LSHIFT] and keypressed[K_w]:
+            self.rect.x += +15
+        if keypressed[K_LSHIFT] and keypressed[K_a]:
+            self.rect.y += +15
+        if keypressed[K_LSHIFT] and keypressed[K_s]:
+            self.rect.y += +15
+        if keypressed[K_LSHIFT] and keypressed[K_d]:
+            self.rect.x += +15
+
+
+    def fire(self):
+        bullet = Bullet('bullet.png', 15, 20, self.rect.centerx, self.rect.centery, 7)
+        Bullets.add(bullet)
+
+
+
+#ship = player('bullet.png', 120, 120, 100, 120, 10)
+rocket = player('rocket.png', 100, 100, 70, 70, 7)
+monsters = sprite.Group()
+for i in range(5):
+    monster = Enenemy('ufo.png', 80, 80, randint(20, 650), randint(-200, -65), randint(2, 4))
+    monsters.add(monster)
+
+Bullets = sprite.Group()
+
+
+
+window = display.set_mode((700, 500))
+display.set_caption('Варзона')
+background = transform.scale(image.load('galaxy.jpg'), (700, 500))
+
+
+
+
+
+
+mixer.init()
+mixer.music.load('space.ogg')
+mixer.music.play()
+fire_sound = mixer.Sound('dom.mp3')
+
+font.init()
+font2 = font.Font(None, 36)
+
+finish = False
+game = True 
+while game:
+    if finish != True: 
+        window.blit(background, (0, 0))
+        rocket.update()
+        rocket.reset()
+        monsters.update()
+        monsters.draw(window)
+        Bullets.update()
+        Bullets.draw(window)
+        collides = sprite.groupcollide(monsters, Bullets, True, True)
+        for c in collides:
+                score += 1
+                monster = Enenemy('ufo.png', 80, 80, randint(20, 650), randint(-200, -65), randint(2, 4))
+                monsters.add(monster)
+        if sprite.spritecollide(rocket, monsters, False) or missing >= 27:
+            finish = True
+
+        if score >= 1:
+            finish = True
+            text2 = font2.render('Победа' + str(missing), 1, (255, 255, 255))
+            window.blit(text2, (300, 300))
+
+        tex1 = font2.render('Счёт: ' + str(score), 1, (255, 255, 255))
+        tex2 = font2.render('Опущенных: ' + str(missing), 1, (255, 255, 255))
+        window.blit(tex1, (10, 20))
+        window.blit(tex2, (10, 50))
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+        if e.type == MOUSEBUTTONDOWN:
+            if e.button == 1:
+                fire_sound.play()
+                rocket.fire()
+
+
+
+    display.update()
+    clock.tick(60)
+
+
+
+
+
+
+
+
+# font.init()
+# font = font.Font(None, 70)
+# win = font.render('ЛОХ', True, (120, 0, 0))
+# lose = font.render('тупой', True, (200, 0, 0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
