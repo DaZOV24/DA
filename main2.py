@@ -35,82 +35,59 @@ font2 = font.Font(None, 36)
 
 window = display.set_mode((1080, 720))
 display.set_caption('русская рулетка')
-maf = transform.scale(image.load('zamena.jpg'), (1080, 720))    
+maf = transform.scale(image.load('fon.jpg'), (1080, 720))    
 pistolet = transform.scale(image.load('gun1488.png'), (350, 350))  
 
 mixer.init()
-mixer.music.load('onacho.mp3')
+mixer.music.load('enit.mp3')
+skrimep = mixer.Sound('skrimep2.mp3')
 mixer.music.play()
 pistoletda = mixer.Sound('pistoletda2remix2.mp3')
-
-
+finish = False
+player = 1
 game = True
 while game:
-    window.blit(maf, (0, 0))
-    window.blit(pistolet, (360, 400))
+    if finish != True:
+        window.blit(maf, (0, 0))
+        window.blit(pistolet, (360, 400))
+        tex1 = font2.render('Сейчас ходит игрок '+str(player)+':', 1, (128, 128, 128))
+        window.blit(tex1, (30, 60))
+        for e in event.get():
+            if e.type == MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    if player == 1:
+                        score += 1
+                        x = randint(1, 8)
+                        player = 2
+                        if x == 1:
+                            pistoletda.play()
+                            finish = True
+
+            if e.type == MOUSEBUTTONUP:
+                if e.button == 3:
+                    if player == 2:
+                        score += 1
+                        x = randint(1, 8)
+                        player = 1
+                        if x == 1:
+                            pistoletda.play()
+                            finish = True    
+        tex1 = font2.render('Кол-во выстрелов: ' + str(score), 1, (255, 255, 255))
+        window.blit(tex1, (10, 20))
+    else:
+        skrimep.play()
+        font3 = font.Font(None, 240)
+        lose = font3.render('СМЕРТЬ', True, (255, 0, 0))
+        window.blit(lose, (250, 300))
+
+
     for e in event.get():
         if e.type == QUIT:
             game = False
-        if e.type == MOUSEBUTTONDOWN:
-            if e.button == 1:
-                score += 1
-                x = randint(1, 8)
-                if x == 1:
-                    pistoletda.play()
-                
-    tex1 = font2.render('Кол-во выстрелов: ' + str(score), 1, (255, 255, 255))
-    window.blit(tex1, (10, 20))
+                   
     
-
-
     pygame.display.update()
     clock.tick(60)
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
