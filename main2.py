@@ -40,84 +40,69 @@ pistolet = transform.scale(image.load('gun1488.png'), (350, 350))
 
 mixer.init()
 mixer.music.load('enit.mp3')
-skrimep = mixer.Sound('skrimep2.mp3')
+# skrimep = mixer.Sound('skrimep2.mp3')
 mixer.music.play()
 pistoletda = mixer.Sound('pistoletda2remix2.mp3')
 finish = False
 player = 1
 game = True
+
+
+    
 while game:
     if finish != True:
         window.blit(maf, (0, 0))
         window.blit(pistolet, (360, 400))
-        tex1 = font2.render('Сейчас ходит игрок '+str(player)+':', 1, (128, 128, 128))
-        window.blit(tex1, (30, 60))
-        for e in event.get():
-            if e.type == MOUSEBUTTONDOWN:
-                if e.button == 1:
-                    if player == 1:
-                        score += 1
-                        x = randint(1, 8)
-                        player = 2
-                        if x == 1:
-                            pistoletda.play()
-                            finish = True
-
-            if e.type == MOUSEBUTTONUP:
-                if e.button == 3:
-                    if player == 2:
-                        score += 1
-                        x = randint(1, 8)
-                        player = 1
-                        if x == 1:
-                            pistoletda.play()
-                            finish = True    
+        tex11 = font2.render('Сейчас ходит игрок '+str(player)+':', 1, (128, 128, 128))
+        window.blit(tex11, (30, 60))
+        
+                   
         tex1 = font2.render('Кол-во выстрелов: ' + str(score), 1, (255, 255, 255))
         window.blit(tex1, (10, 20))
     else:
-        skrimep.play()
+        # skrimep.play()
         font3 = font.Font(None, 240)
         lose = font3.render('СМЕРТЬ', True, (255, 0, 0))
         window.blit(lose, (250, 300))
 
+    # if score > 2:
+    #     font3 = font.Font(None, 240)
+    #     lose = font3.render('Патроны кончились!', True, (0, 55, 55))
+    #     window.blit(lose, (100, 300))
+    #     game = False
 
     for e in event.get():
+        if e.type == MOUSEBUTTONDOWN:
+            if e.button == 1:
+                if player == 1:
+                    score += 1
+                    x = randint(1, 8)
+                    player = 2
+                    if x == 1:
+                        pistoletda.play()
+                        finish = True
+
+        if e.type == MOUSEBUTTONUP:
+            if e.button == 3:
+                if player == 2:
+                    score += 1
+                    x = randint(1, 8)
+                    player = 1
+                    if x == 1:
+                        pistoletda.play()
+                        finish = True    
         if e.type == QUIT:
             game = False
-                   
-    
+        # if score == 9:
+        #     font3 = font.Font(None, 200)
+        #     lose = font3.render('Патроны кончились!', True, (0, 55, 55))
+        #     window.blit(lose, (200, 300))
+        #     game = False
+
+
+
     pygame.display.update()
     clock.tick(60)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-display.update()
-clock.tick(60)
-
-
-
-
 
 
 
