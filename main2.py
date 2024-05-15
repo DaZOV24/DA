@@ -1,32 +1,3 @@
-import pygame
-from random import *
-from pygame import *
-
-pygame.init()
-
-score = 0 
-
-clock = time.Clock()
-class GameSprite(sprite.Sprite):
-     def __init__(self, player_image, player_w, player_h, player_x, player_y, player_speed):
-         super().__init__()
-         self.image = transform.scale(image.load(player_image), (player_w, player_h))
-         self.speed = player_speed
-         self.rect = self.image.get_rect()
-         self.rect.x = player_x
-         self.rect.y = player_y
-     def reset(self):
-         window.blit(self.image, (self.rect.x, self.rect.y))
-
-
-
-class Bullet(GameSprite):
-    def update(self):
-        self.rect.y -= self.speed
-        if self.rect.y <= 0:
-            self.kill()
-
-
 font.init()
 font2 = font.Font(None, 36)
 
@@ -40,9 +11,10 @@ maf = transform.scale(image.load('fon.jpg'), (1080, 720))
 pistolet = transform.scale(image.load('gun1488.png'), (350, 350))  
 
 mixer.init()
-mixer.music.load('enit.mp3')
+# mixer.music.load('enit.mp3')
 # skrimep = mixer.Sound('skrimep2.mp3')
-mixer.music.play()
+baranan = mixer.Sound('baranan.mp3')
+# mixer.music.play()
 pistoletda = mixer.Sound('pistoletda2remix2.mp3')
 finish = False
 player = 1
@@ -92,6 +64,7 @@ while game:
                     if x == 1:
                         pistoletda.play()
                         finish = True
+
                         
 
         else:
@@ -129,12 +102,16 @@ while game:
             if e.type == MOUSEBUTTONDOWN:
                 if e.button == 1:
                     if player == 1:
+                        
                         score += 1
                         x = randint(1, 8)
                         player = 2
                         if x == 1:
                             pistoletda.play()
                             finish = True
+                        else:
+                            baranan.play()
+
 
             if e.type == MOUSEBUTTONUP:
                 if e.button == 3:
@@ -145,21 +122,25 @@ while game:
                             player = 1
                             if x == 1:
                                 pistoletda.play()
-                                finish = True    
+                                finish = True
+                            else:
+                                baranan.play()
+
         
         if e.type == KEYDOWN:
             if e.key == K_e:
                 mode = 1
                 gamestart = True
+                baranan.play()
             if e.type == KEYDOWN:
                 if e.key == K_q:
                     mode = 2
                     gamestart = True           
-
+                    baranan.play()
         if e.type == QUIT:
             game = False
             # if score == 9:
-            #     font3 = font.Font(None, 200)
+            #     font3 = font.Font(None, 200) 
             #     lose = font3.render('Патроны кончились!', True, (0, 55, 55))
             #     window.blit(lose, (200, 300))
             #     game = False
@@ -168,6 +149,10 @@ while game:
 
     pygame.display.update()
     clock.tick(60)
+
+
+
+
 
 
 
