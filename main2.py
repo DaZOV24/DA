@@ -1,9 +1,15 @@
+from pygame import *
+from random import *
+
+score = 0
+
 font.init()
 font2 = font.Font(None, 36)
 
 
 
 
+clock = time.Clock()
 
 window = display.set_mode((1080, 720))
 display.set_caption('русская рулетка')
@@ -61,6 +67,7 @@ while game:
                 if player == 2:
                     x = randint(1, 8)
                     player = 1
+                    score += 1
                     if x == 1:
                         pistoletda.play()
                         finish = True
@@ -147,10 +154,8 @@ while game:
 
 
 
-    pygame.display.update()
+    display.update()
     clock.tick(60)
-
-
 
 
 
