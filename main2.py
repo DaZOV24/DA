@@ -13,7 +13,7 @@ clock = time.Clock()
 
 window = display.set_mode((1080, 720))
 display.set_caption('русская рулетка')
-maf = transform.scale(image.load('fon.jpg'), (1080, 720))    
+# maf = transform.scale(image.load('fon.jpg'), (1080, 720))    
 pistolet = transform.scale(image.load('gun1488.png'), (350, 350))  
 
 mixer.init()
@@ -39,13 +39,13 @@ while game:
         tex11 = font2.render('Если хотите онлайн, нажмите ''E''', 1, (128, 128, 128))          
         window.blit(tex11, (250, 220))
 
-
+   
 
     else:
         if finish != True:
             if mode == 1:
                 # Игра с человеком
-
+                maf = transform.scale(image.load('fon.jpg'), (1080, 720)) 
                 window.blit(maf, (0, 0))
                 window.blit(pistolet, (360, 400))
                 tex11 = font2.render('Сейчас ходит игрок '+str(player)+':', 1, (128, 128, 128))
@@ -56,6 +56,8 @@ while game:
                 window.blit(tex1, (10, 20))
             if mode == 2:
                 # Bot
+                maf = transform.scale(image.load('fon2.jpg'), (1080, 720)) 
+
                 window.blit(maf, (0, 0))
                 window.blit(pistolet, (360, 400))
                 tex11 = font2.render('Сейчас ходит игрок '+str(player)+':', 1, (128, 128, 128))
@@ -88,6 +90,7 @@ while game:
             score = 0
             player = 1
             
+            
 
 
 
@@ -117,7 +120,8 @@ while game:
                             pistoletda.play()
                             finish = True
                         else:
-                            baranan.play()
+                            if score  == 4:
+                                baranan.play()
 
 
             if e.type == MOUSEBUTTONUP:
@@ -156,6 +160,15 @@ while game:
 
     display.update()
     clock.tick(60)
+
+
+
+
+
+
+
+
+
 
 
 
